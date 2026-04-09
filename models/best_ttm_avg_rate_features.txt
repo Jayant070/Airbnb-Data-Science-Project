@@ -1,0 +1,69 @@
+# Features used for selected TTM Average Rate model
+# Model: Stacking Ensemble
+# Selection criteria: test_r2 >= 0.75, then low RMSE/MAE, then low overfit gap
+# Test RMSE: 0.3439
+# Test MAE: 0.2570
+# Test R2: 0.8153
+# Train R2: 0.9356
+# Overfit Gap: 0.1203
+
+1. photos_count
+2. superhost
+3. latitude
+4. longitude
+5. guests
+6. bedrooms
+7. beds
+8. baths
+9. registration
+10. professional_management
+11. min_nights
+12. cancellation_policy
+13. cleaning_fee
+14. extra_guest_fee
+15. num_reviews
+16. ttm_blocked_days
+17. ttm_total_days
+18. distance_from_city_center
+19. city_population
+20. luxury_score
+21. basic_count
+22. comfort_count
+23. kitchen_count
+24. safety_count
+25. outdoor_count
+26. family_count
+27. services_count
+28. has_pool
+29. has_hot_tub
+30. has_gym
+31. has_beach_access
+32. has_dedicated_workspace
+33. has_pets_allowed
+34. has_free_parking_on_premises
+35. has_air_conditioning
+36. total_amenities
+37. comfort_to_total_ratio
+38. rarity_score
+39. avg_rating
+40. listing_type_apartment
+41. listing_type_bungalow
+42. listing_type_condo
+43. listing_type_home
+44. listing_type_hospitality
+45. listing_type_loft
+46. listing_type_luxury_unique
+47. listing_type_nature_stay
+48. listing_type_other
+49. listing_type_unique_stay
+50. listing_type_villa
+51. room_type_entire_home
+52. room_type_hotel_room
+53. room_type_private_room
+54. room_type_shared_room
+55. geographic_zone_Africa
+56. geographic_zone_Asia Pacific
+57. geographic_zone_Europe
+58. geographic_zone_Latin America
+59. geographic_zone_Middle East
+60. geographic_zone_Northern America

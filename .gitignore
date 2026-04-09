@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod
+.venv/
+.streamlit/
+streamlit_venv/
+test/models/*.pkl
+!models/*features.txt
+!models/model_registry.json
+!models/*metrics.csv
+!models/*metrics.json
+!models/competitive_*.csv

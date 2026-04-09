@@ -1,0 +1,32 @@
+Training snapshot: 2026-04-09
+Source: models/model_registry.json
+
+BEST_TTM_AVG_RATE
+- model_file: best_ttm_avg_rate_model.pkl
+- features_file: best_ttm_avg_rate_features.txt
+- model_name: Stacking Ensemble
+- target_column: ttm_avg_rate
+- target_transform: log1p
+- feature_count: 60
+- test_r2: 0.8152978291772165
+- test_rmse: 0.34394548133771125
+- test_mae: 0.2570102373400729
+- train_r2: 0.935554529488509
+- overfit_gap: 0.12025670031129254
+
+BEST_TTM_REVENUE
+- model_file: best_ttm_revenue_model.pkl
+- features_file: best_ttm_revenue_features.txt
+- model_name: XGBoost Regressor
+- target_column: ttm_revenue
+- target_transform: log1p
+- feature_count: 60
+- test_r2: 0.6827970202211837
+- test_rmse: 0.7573893814913967
+- test_mae: 0.5902374918218714
+- train_r2: 0.750615531601637
+- overfit_gap: 0.06781851138045325
+
+Notes
+- API returns business-scale outputs by inverse-transforming log predictions.
+- Competitive analysis endpoint uses geo clustering plus the deployed price model.

@@ -1,14 +1,10 @@
 from __future__ import annotations
-
 from pathlib import Path
 from typing import Optional
-
 import numpy as np
 import pandas as pd
-
 from scripts.data.main.amenties_utility import create_amenity_features
 from scripts.data.main.listing_type_utils import categorize_listing
-
 
 CANCELLATION_ORDER = {
     "Full Refundable Until Check-in": 0,
@@ -24,7 +20,6 @@ CANCELLATION_ORDER = {
     "Super Strict 30 Days": 10,
     "Super Strict 60 Days": 11,
 }
-
 
 def _convert_bool_like(df: pd.DataFrame) -> pd.DataFrame:
     bool_like_map = {
@@ -60,7 +55,7 @@ def _convert_bool_like(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-
+# Main pipeline function
 def run_feature_engineering_pipeline(
     input_path: Path,
     output_path: Path,
@@ -69,7 +64,7 @@ def run_feature_engineering_pipeline(
 ) -> pd.DataFrame:
     df = pd.read_csv(input_path, low_memory=False)
 
-    # Step 1: missing values
+    # missing values
     missing_ratio = df.isna().mean()
     too_missing_cols = missing_ratio[missing_ratio > 0.50].index.tolist()
     df = df.drop(columns=too_missing_cols, errors="ignore")
@@ -87,7 +82,7 @@ def run_feature_engineering_pipeline(
             if not mode_series.empty:
                 df[col] = df[col].fillna(mode_series.iloc[0])
 
-    # Step 2: drop leakage/useless
+    # drop leakage/useless
     drop_always = [
         "listing_id", "cover_photo_url", "host_id", "host_name", "listing_name", "cohost_names", "currency",
         "city", "country", "country_code",
@@ -98,7 +93,7 @@ def run_feature_engineering_pipeline(
     cols_to_drop = [col for col in (drop_always + drop_l90d + drop_native + drop_leakage) if col in df.columns]
     df = df.drop(columns=cols_to_drop, errors="ignore")
 
-    # Step 3: derived features
+    # derived features
     if "amenities" in df.columns:
         amenity_features = create_amenity_features(df["amenities"])
         df = pd.concat([df, amenity_features], axis=1)
@@ -114,10 +109,10 @@ def run_feature_engineering_pipeline(
         if "luxury_score" in df.columns:
             df.loc[df["listing_type"] == "luxury_unique", "luxury_score"] += 8
 
-    # Step 4: bool-like encoding
+    # bool-like encoding
     df = _convert_bool_like(df)
 
-    # Step 5: invalid rows and robust outlier filtering
+    # invalid rows and robust outlier filtering
     for col in ["min_nights", "distance_from_city_center", "cleaning_fee", "bedrooms", "beds", "baths", "guests", "num_reviews", "photos_count"]:
         if col in df.columns:
             df = df[df[col] >= 0]
@@ -147,7 +142,7 @@ def run_feature_engineering_pipeline(
         keep_mask &= ~((df[col] < lower) | (df[col] > upper))
     df = df[keep_mask].copy()
 
-    # Step 6: categorical encoding
+    # categorical encoding
     if "cancellation_policy" in df.columns:
         df["cancellation_policy"] = df["cancellation_policy"].astype(str).str.strip().map(CANCELLATION_ORDER).fillna(4)
 
@@ -155,7 +150,7 @@ def run_feature_engineering_pipeline(
     if encode_cols:
         df = pd.get_dummies(df, columns=encode_cols)
 
-    # Step 7: log transforms
+    # log transforms
     log_cols = ["num_reviews", "distance_from_city_center"]
     if log_transform_target:
         log_cols.extend(["ttm_avg_rate", "ttm_revenue"])
@@ -163,7 +158,7 @@ def run_feature_engineering_pipeline(
         if col in df.columns:
             df[col] = np.log1p(np.clip(df[col], a_min=0.0, a_max=None))
 
-    # Step 8: duplicates
+    # duplicates
     df = df.drop_duplicates().reset_index(drop=True)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)

@@ -1,14 +1,11 @@
 from __future__ import annotations
-
 import json
 from pathlib import Path
 from typing import Dict, List, Tuple
-
 import joblib
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-
 from scripts.training.price_model_trainer import (
     metrics_to_frame,
     train_decision_tree_regressor,
@@ -23,7 +20,6 @@ from scripts.training.price_model_trainer import (
     train_xgboost_regressor,
 )
 
-
 ZONE_COLS = [
     "geographic_zone_Asia Pacific",
     "geographic_zone_Europe",
@@ -32,7 +28,6 @@ ZONE_COLS = [
     "geographic_zone_Latin America",
     "geographic_zone_Middle East",
 ]
-
 
 def _split_data(df: pd.DataFrame, target_col: str, leak_cols: List[str]) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series, List[str]]:
     data = df.dropna(subset=[target_col]).copy()
@@ -51,7 +46,6 @@ def _split_data(df: pd.DataFrame, target_col: str, leak_cols: List[str]) -> Tupl
         random_state=42,
     )
     return X_train, X_test, y_train, y_test, X.columns.tolist()
-
 
 def _train_baseline_models(X_train, X_test, y_train, y_test):
     train_functions = [
@@ -75,7 +69,7 @@ def _train_baseline_models(X_train, X_test, y_train, y_test):
         fitted[result.model] = model
     return results, fitted
 
-
+# Select best model based on test R² with tie-breaking on RMSE, MAE, and overfitting gap
 def _select_best_model(results_df: pd.DataFrame):
     metrics = results_df.copy()
     metrics["source"] = "baseline"
@@ -87,7 +81,6 @@ def _select_best_model(results_df: pd.DataFrame):
 
     eligible = eligible.sort_values(["test_rmse", "test_mae", "overfit_gap", "test_r2"], ascending=[True, True, True, False]).reset_index(drop=True)
     return eligible.iloc[0], metrics
-
 
 def _update_registry(
     models_dir: Path,
@@ -200,7 +193,6 @@ def run_training_pipeline(
         "feature_count": len(feature_cols),
     }
 
-
 def run_price_training_pipeline(feature_path: Path, models_dir: Path) -> Dict:
     return run_training_pipeline(
         feature_path=feature_path,
@@ -213,7 +205,6 @@ def run_price_training_pipeline(feature_path: Path, models_dir: Path) -> Dict:
         metrics_csv_name="all_price_model_metrics.csv",
         metrics_json_name="all_price_model_metrics.json",
     )
-
 
 def run_revenue_training_pipeline(feature_path: Path, models_dir: Path) -> Dict:
     return run_training_pipeline(

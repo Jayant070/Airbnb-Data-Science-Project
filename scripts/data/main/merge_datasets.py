@@ -8,8 +8,12 @@ data/processed/main.
 
 import os
 import sys
+import logging
 import pandas as pd
 from pathlib import Path
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
 
 
 def find_csv_files(root_dir):
@@ -38,83 +42,73 @@ def merge_csv_files(root_dir, output_file):
     csv_files = find_csv_files(root_dir)
 
     if not csv_files:
-        print("Error: No CSV files found.")
+        logger.error("No CSV files found.")
         return False
 
-    print(f"Found {len(csv_files)} CSV files in {root_dir}")
+    logger.info(f"Found {len(csv_files)} CSV files in {root_dir}")
 
-    # Read first file as reference
     try:
         base_df = pd.read_csv(csv_files[0])
         base_columns = set(base_df.columns)
     except Exception as e:
-        print(f"Error reading {csv_files[0]}: {e}")
+        logger.error(f"Error reading {csv_files[0]}: {e}")
         return False
 
-    print(f"Base schema: {sorted(base_columns)}")
+    logger.info(f"Base schema: {sorted(base_columns)}")
 
     all_dfs = [base_df]
     skipped_files = []
 
-    # Check remaining files
     for file in csv_files[1:]:
         try:
             df = pd.read_csv(file)
             current_columns = set(df.columns)
 
             if current_columns != base_columns:
-                print(f"\nWarning: Column mismatch detected in: {file}")
+                logger.warning(f"Column mismatch detected in: {file}")
 
                 missing = base_columns - current_columns
                 extra = current_columns - base_columns
 
                 if missing:
-                    print(f"   Missing columns: {missing}")
+                    logger.warning(f"Missing columns: {missing}")
                 if extra:
-                    print(f"   Extra columns: {extra}")
+                    logger.warning(f"Extra columns: {extra}")
 
                 skipped_files.append(file)
                 continue
 
-            # Ensure same column order
             df = df[sorted(base_columns)]
             all_dfs.append(df)
-            print(f"Added: {file}")
+            logger.info(f"Added: {file}")
 
         except Exception as e:
-            print(f"Error reading {file}: {e}")
+            logger.error(f"Error reading {file}: {e}")
             skipped_files.append(file)
 
-    # Merge all
     merged_df = pd.concat(all_dfs, ignore_index=True)
 
     try:
-        # Create output directory if it doesn't exist
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
         
         merged_df.to_csv(output_file, index=False)
-        print(f"\nSuccessfully merged {len(all_dfs)} files into:")
-        print(f"   {output_file}")
-        print(f"Output shape: {merged_df.shape}")
+        logger.info(f"Successfully merged {len(all_dfs)} files into: {output_file}")
+        logger.info(f"Output shape: {merged_df.shape}")
         
         if skipped_files:
-            print(f"\nSkipped files ({len(skipped_files)}):")
+            logger.warning(f"Skipped files ({len(skipped_files)}):")
             for f in skipped_files:
-                print(f"   {f}")
+                logger.warning(f"{f}")
         
         return True
     except Exception as e:
-        print(f"Error saving merged file: {e}")
+        logger.error(f"Error saving merged file: {e}")
         return False
 
 
 if __name__ == "__main__":
     project_root = get_project_root()
-    
-    # Input directory: raw data
     input_directory = project_root / "data" / "raw" / "main"
-    
-    # Output file: processed data
     output_directory = project_root / "data" / "processed" / "main"
     output_file = output_directory / "merged.csv"
     

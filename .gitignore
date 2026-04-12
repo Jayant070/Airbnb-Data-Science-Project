@@ -1,9 +1,9 @@
 __pycache__/
-*.py[cod
+*.py[cod]
 .venv/
 .streamlit/
 streamlit_venv/
-test/models/*.pkl
+models/*.pkl
 !models/*features.txt
 !models/model_registry.json
 !models/*metrics.csv

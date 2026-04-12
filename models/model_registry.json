@@ -32,11 +32,43 @@
       "training_date": "2026-04-09T17:40:49.677187"
     },
     "best_ttm_revenue": {
-      "model_type": "best_ttm_revenue_model.pkl",
+      "model_file": "best_ttm_revenue_model.json",
+      "model_format": "XGBoost JSON (native)",
       "features_file": "best_ttm_revenue_features.txt",
       "metrics_files": {
-        "all_models_csv": "all_model_metrics.csv",
-        "all_models_json": "all_model_metrics.json"
+        "all_models_csv": "all_revenue_model_metrics.csv",
+        "all_models_json": "all_revenue_model_metrics.json"
+      },
+      "selection_criteria": {
+        "min_test_r2": 0.75,
+        "priority_order": [
+          "test_rmse",
+          "test_mae",
+          "overfit_gap"
+        ]
+      },
+      "metrics": {
+        "test_rmse": 0.7573893814913967,
+        "test_mae": 0.5902374918218714,
+        "test_r2": 0.6827970202211837,
+        "train_r2": 0.750615531601637,
+        "train_rmse": 0.6738017968434664,
+        "train_mae": 0.5235923311649623,
+        "overfit_gap": 0.06781851138045325,
+        "target_transform": "log1p",
+        "target_column": "ttm_revenue"
+      },
+      "model_name": "XGBoost Regressor",
+      "source": "XGBRegressor",
+      "feature_count": 60,
+      "training_date": "2026-04-12T00:09:35.855525"
+    },
+    "best_ttm_avg_revenue": {
+      "model_file": "best_ttm_revenue_model.pkl",
+      "features_file": "best_ttm_revenue_features.txt",
+      "metrics_files": {
+        "all_models_csv": "all_price_model_metrics.csv",
+        "all_models_json": "all_price_model_metrics.json"
       },
       "selection_criteria": {
         "min_test_r2": 0.75,
@@ -60,7 +92,7 @@
       "model_name": "XGBoost Regressor",
       "source": "baseline",
       "feature_count": 60,
-      "training_date": "2026-04-09T16:38:06.768903"
+      "training_date": "2026-04-11T22:23:04.164766"
     }
   }
 }

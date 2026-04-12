@@ -120,4 +120,4 @@ class ModelLoader:
 
 if __name__ == "__main__":
     loader = ModelLoader("../models")
-    print("Available models:", list(loader.registry.get("models", {}).keys()))
+    _ = list(loader.registry.get("models", {}).keys())

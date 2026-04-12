@@ -11,12 +11,14 @@ import math
 import os
 import pickle
 import argparse
+import logging
 from functools import lru_cache
 from typing import Any, Dict, Optional, Tuple
 
 import numpy as np
 import pandas as pd
 
+logger = logging.getLogger(__name__)
 EARTH_RADIUS_KM = 6371.0
 
 def _validate_coordinates(latitude: float, longitude: float) -> None:
@@ -271,6 +273,7 @@ def resolve_city_distance(
 
 
 if __name__ == "__main__":
+	logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 	parser = argparse.ArgumentParser(description="Resolve nearest city using coordinates only")
 	parser.add_argument("--latitude", type=float, required=True, help="Input latitude")
 	parser.add_argument("--longitude", type=float, required=True, help="Input longitude")
@@ -294,4 +297,4 @@ if __name__ == "__main__":
 		alias_map_path=args.alias_map,
 		min_population=args.min_population,
 	)
-	print(result)
+	logger.info(result)

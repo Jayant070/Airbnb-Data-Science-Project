@@ -1,11 +1,9 @@
-# Features used for selected TTM Average Rate model
+# Features used for TTM Revenue model
 # Model: XGBoost Regressor
+# Format: XGBoost JSON (native)
 # Selection criteria: test_r2 >= 0.75, then low RMSE/MAE, then low overfit gap
-# Test RMSE: 0.7574
-# Test MAE: 0.5902
 # Test R2: 0.6828
-# Train R2: 0.7506
-# Overfit Gap: 0.0678
+# Test RMSE: 0.7574
 
 1. photos_count
 2. superhost

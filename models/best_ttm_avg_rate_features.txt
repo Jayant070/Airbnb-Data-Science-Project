@@ -1,8 +1,9 @@
 # Features used for selected TTM Average Rate model
 # Model: Stacking Ensemble
+# Format: joblib pickle
 # Selection criteria: test_r2 >= 0.75, then low RMSE/MAE, then low overfit gap
-# Test RMSE: 0.3439
-# Test MAE: 0.2570
+# Test RMSE (log scale): 0.3439
+# Test MAE (log scale): 0.2570
 # Test R2: 0.8153
 # Train R2: 0.9356
 # Overfit Gap: 0.1203

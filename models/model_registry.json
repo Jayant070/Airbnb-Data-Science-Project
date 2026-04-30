@@ -2,6 +2,7 @@
   "models": {
     "best_ttm_avg_rate": {
       "model_file": "best_ttm_avg_rate_model.pkl",
+      "model_format": "joblib pickle",
       "features_file": "best_ttm_avg_rate_features.txt",
       "metrics_files": {
         "all_models_csv": "all_price_model_metrics.csv",
@@ -27,9 +28,8 @@
         "target_column": "ttm_avg_rate"
       },
       "model_name": "Stacking Ensemble",
-      "source": "baseline",
       "feature_count": 60,
-      "training_date": "2026-04-09T17:40:49.677187"
+      "training_date": "2026-04-30T12:00:00.217721"
     },
     "best_ttm_revenue": {
       "model_file": "best_ttm_revenue_model.json",
@@ -48,20 +48,20 @@
         ]
       },
       "metrics": {
-        "test_rmse": 0.7573893814913967,
-        "test_mae": 0.5902374918218714,
-        "test_r2": 0.6827970202211837,
-        "train_r2": 0.750615531601637,
-        "train_rmse": 0.6738017968434664,
-        "train_mae": 0.5235923311649623,
-        "overfit_gap": 0.06781851138045325,
+        "test_rmse": 0.5289150894628819,
+        "test_mae": 0.411451797403243,
+        "test_r2": 0.7177593014806469,
+        "train_r2": 0.9157572771033222,
+        "train_rmse": 0.2902459696476038,
+        "train_mae": 0.21902698000659415,
+        "overfit_gap": 0.1979979756226753,
         "target_transform": "log1p",
         "target_column": "ttm_revenue"
       },
       "model_name": "XGBoost Regressor",
       "source": "XGBRegressor",
       "feature_count": 60,
-      "training_date": "2026-04-12T00:09:35.855525"
+      "training_date": "2026-04-30T11:32:15.435766"
     },
     "best_ttm_avg_revenue": {
       "model_file": "best_ttm_revenue_model.pkl",

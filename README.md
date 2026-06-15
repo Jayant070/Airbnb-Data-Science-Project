@@ -1,81 +1,114 @@
 # Airbnb Pricing and Revenue Intelligence
 
-End-to-end project for Airbnb market intelligence:
+An end-to-end Data Science and Machine Learning platform designed to estimate Airbnb property pricing and revenue potential. The project combines data preprocessing, feature engineering, predictive modeling, API deployment, and interactive analytics to provide actionable market intelligence for property owners and investors.
 
-- data processing and feature engineering
-- model training and artifact registry
-- FastAPI serving for inference
-- Streamlit dashboard for interactive use
+## Project Overview
 
-## Current Project Status
+This project analyzes Airbnb listing data and predicts:
 
-The active production artifacts are:
+* Average nightly rental price
+* Estimated annual revenue
+* Market competitiveness
+* Pricing opportunities across locations
 
-- `models/best_ttm_avg_rate_model.pkl`
-- `models/best_ttm_revenue_model.pkl`
-- `models/best_ttm_avg_rate_features.txt`
-- `models/best_ttm_revenue_features.txt`
-- `models/model_registry.json`
+The system includes machine learning models, a FastAPI inference service, and a Streamlit dashboard for real-time business insights.
 
-Both active targets use log-transformed training targets (`log1p`) and are inverse-transformed to business scale during API inference.
+## Features
 
-## Repository Layout
+* Data cleaning and preprocessing pipeline
+* Feature engineering and geo-based enrichment
+* Machine Learning model training and evaluation
+* Model registry and artifact management
+* FastAPI-based prediction service
+* Interactive Streamlit dashboard
+* Batch prediction support
+* Competitive market analysis
 
-- `api/`: FastAPI app and API container files
-- `app.py`: Streamlit dashboard
-- `data/`: raw and processed datasets
-- `scripts/`: data prep, geo encoding, training utilities
-- `src/`: reusable preprocessing and training pipelines
-- `models/`: trained artifacts and model registry
-- `docs/`: metrics summary and local inference helper
-- `Notebooks/`: EDA, feature engineering, training, and clustering notebooks
+## Tech Stack
 
-## Local Setup
+* Python
+* Pandas
+* NumPy
+* Scikit-Learn
+* FastAPI
+* Streamlit
+* Joblib
+* Machine Learning
+* Data Visualization
 
-Create an environment and install project dependencies:
+## Project Architecture
+
+```text
+Raw Airbnb Data
+        │
+        ▼
+Data Cleaning & Feature Engineering
+        │
+        ▼
+Model Training & Evaluation
+        │
+        ▼
+Model Registry
+        │
+ ┌──────┴──────┐
+ ▼             ▼
+FastAPI      Streamlit
+Inference    Dashboard
+```
+
+## Repository Structure
+
+```text
+api/        → FastAPI prediction service
+src/        → Training and preprocessing pipelines
+scripts/    → Data preparation utilities
+models/     → Trained model artifacts
+data/       → Processed datasets
+docs/       → Documentation and metrics
+notebooks/  → EDA and experimentation
+app.py      → Streamlit dashboard
+```
+
+## Running the Project
+
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
-```
-
-Install API dependencies:
-
-```bash
 pip install -r api/requirements.txt
 ```
 
-## Run API
+### Start FastAPI Server
 
 ```bash
 cd api
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+uvicorn main:app --reload
 ```
 
-Docs UI:
-
-```text
-http://localhost:8000/api/docs
-```
-
-## Run Dashboard
-
-From project root:
+### Launch Dashboard
 
 ```bash
 streamlit run app.py
 ```
 
-## Main API Endpoints
+## API Endpoints
 
-- `GET /api/health`
-- `POST /api/predict/price`
-- `POST /api/predict/revenue`
-- `POST /api/predict/ttm-avg-rate`
-- `POST /api/predict/batch`
-- `POST /api/analyze/competitive`
+* GET `/api/health`
+* POST `/api/predict/price`
+* POST `/api/predict/revenue`
+* POST `/api/predict/ttm-avg-rate`
+* POST `/api/predict/batch`
+* POST `/api/analyze/competitive`
 
-## Notes
+## Future Improvements
 
-- The API performs feature engineering internally, including amenity parsing and geo-based enrichment.
-- Request-level `distance_from_city_center` and `city_population` override geo-resolved values when provided.
-- Use `DEBUG_FEATURE_LOGGING=true|false` to control final model input logging.
+* Deep learning-based pricing models
+* Automated model retraining pipeline
+* Cloud deployment with CI/CD
+* Time-series demand forecasting
+* Recommendation engine for hosts
+
+## Contributors
+
+* Jayant Jadhav
+* Rushi K.
